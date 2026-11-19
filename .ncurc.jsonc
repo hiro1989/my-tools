@@ -1,0 +1,10 @@
+{
+  "$schema": "https://raw.githubusercontent.com/raineorshine/npm-check-updates/v19.3.2/src/types/RunOptions.json",
+  // Sync with "minimumReleaseAge" in "pnpm-workspace.yaml"
+  "cooldown": 3,
+  "reject": [
+    // Sync with ".node-version"
+    "@types/node",
+  ],
+  "upgrade": true,
+}
