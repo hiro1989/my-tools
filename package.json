@@ -16,7 +16,8 @@
     "lint:oxlint-fix-only": "oxlint -c .oxlintrc.no-type-aware.json --format unix . --fix > /dev/null 2>&1 || true",
     "preview": "vite preview",
     "test": "vitest run",
-    "test-watch": "vitest"
+    "test-watch": "vitest",
+    "tool:update-all-deps": "pnpm dlx npm-check-updates@19.3.2 --configFileName .ncurc.jsonc"
   },
   "dependencies": {
     "@fontsource-variable/geist": "5.3.0",
