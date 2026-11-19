@@ -74,6 +74,7 @@
       "Bash(playwright-cli press:*)",
       "Bash(playwright-cli screenshot:*)",
       "Bash(playwright-cli snapshot:*)",
+      "Bash(bash .claude/skills/browser-automation/scripts/check-playwright-cli.sh)",
       "Bash(pnpm exec bats:*)",
       "Bash(pnpm exec tsc:*)",
       "Bash(ps:*)",

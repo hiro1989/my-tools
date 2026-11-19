@@ -8,7 +8,7 @@
 .LSOverride
 
 # Icon must end with two \r
-Icon
+Icon
 
 # Thumbnails
 ._*
@@ -346,5 +346,7 @@ pyrightconfig.json
 
 ### Project ###
 .wrangler/
+# playwright-cli の出力先
+.playwright-cli/
 # Python テンプレートの `lib/` が frontend の src/lib/ にも当たるため、除外を打ち消す
 !src/lib/
