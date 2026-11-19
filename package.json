@@ -5,8 +5,6 @@
   "type": "module",
   "scripts": {
     "build": "vite build",
-    "deploy": "run-s build deploy:wrangler",
-    "deploy:wrangler": "wrangler deploy",
     "dev": "vite",
     "lint": "run-s lint:format lint:oxlint",
     "lint-dry": "run-s --continue-on-error lint-dry:format lint-dry:oxlint",
