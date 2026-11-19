@@ -1,0 +1,12 @@
+allowBuilds:
+  esbuild: true
+  lefthook: true
+  workerd: true
+
+# Supply-chain guard: 公開から 3 日 (4320 分) 未満の version は install しない。
+minimumReleaseAge: 4320
+
+saveExact: true
+
+# CI has no separate check for unapproved build scripts, so pnpm install must fail on them even if the pnpm default changes.
+strictDepBuilds: true

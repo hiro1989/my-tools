@@ -343,3 +343,8 @@ poetry.toml
 pyrightconfig.json
 
 # End of https://www.toptal.com/developers/gitignore/api/macos,node,python
+
+### Project ###
+.wrangler/
+# Python テンプレートの `lib/` が frontend の src/lib/ にも当たるため、除外を打ち消す
+!src/lib/

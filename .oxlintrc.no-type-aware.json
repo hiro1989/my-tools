@@ -1,0 +1,12 @@
+{
+  "$schema": "./node_modules/oxlint/configuration_schema.json",
+  // lint:oxlint-fix-only (e.g. pre-commit hook) 専用の fast config。
+  // type-aware linting (oxlint-tsgolint) と type check を無効化するための config。
+  // oxlint CLI には type-aware を無効化する flag が無い。
+  // そのため、特に意識せず実行する場合は `typeAware:true`, 明示的に無効化したい場合はこの config を指定する運用にする。
+  "extends": ["./.oxlintrc.json"],
+  "options": {
+    "typeAware": false,
+    "typeCheck": false
+  }
+}

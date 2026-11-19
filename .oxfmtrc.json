@@ -1,0 +1,18 @@
+{
+  "$schema": "./node_modules/oxfmt/configuration_schema.json",
+  "ignorePatterns": [
+    "coverage",
+    "dist",
+    "pnpm-lock.yaml",
+    "pnpm-workspace.yaml",
+    "**/public/*"
+  ],
+  "printWidth": 80,
+  "semi": false,
+  "sortImports": {
+    "sortSideEffects": true
+  },
+  "sortPackageJson": {
+    "sortScripts": true
+  }
+}
