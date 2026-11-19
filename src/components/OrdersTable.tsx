@@ -78,7 +78,7 @@ export const OrdersTable = ({ record }: Props): JSX.Element => {
         </TableHeader>
         <TableBody>
           {record.orders.map((o, index) => (
-            <TableRow key={o.id}>
+            <TableRow className="border-border/60" key={o.id}>
               <TableCell>
                 <Checkbox
                   aria-label={`発注 ${index + 1} を選択`}
