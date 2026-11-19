@@ -76,7 +76,7 @@ export const ComparePricesTable = ({ record }: Props): JSX.Element => {
               )
 
               return (
-                <TableRow key={p.id}>
+                <TableRow className="border-border/60" key={p.id}>
                   <TableCell>
                     <RadioGroupItem
                       aria-label={`価格比較 ${index + 1} を想定目標にする`}

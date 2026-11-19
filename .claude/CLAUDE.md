@@ -22,3 +22,32 @@
   - Applies to all prose contexts: JSDoc and other code comments, `.md` files, PR descriptions, commit message bodies.
   - This rule overrides the conventional 80-column wrap in every language, e.g. JSDoc, shell, Terraform, Python, SQL, YAML, even for long sentences.
   - Why: mid-sentence breaks disrupt LLM tokenization and hurt human readability.
+
+## Project
+
+- 個人的な便利ツール Web application である。
+
+## Commands
+
+- 検証は `pnpm lint-dry`, `pnpm test`, `pnpm build` で行う。
+- `pnpm lint` は format と lint の autofix を行う。
+- 型検査は `tsc` ではなく、oxlint の `options.typeCheck` (oxlint-tsgolint) で lint と同時に行う。
+- package manager は pnpm のみ使う。
+- `pnpm-workspace.yaml` の `minimumReleaseAge` により、公開直後の version は install できない。
+
+## Code
+
+- import alias は `@/` ではなく `#/` を使う。
+- domain logic は `src/domain/` に純関数で書く。
+  - record の操作は `CalculatorRecord` を受け取り、新しい `CalculatorRecord` を返す。
+  - component からは store の `updateRecord(id, updater)` に渡して使う。
+- 通貨は record 単位で持ち、order と比較価格の金額は数値だけを持つ。
+- test は `src/domain/` と `src/lib/` だけを対象にし、component test は書かない。
+- 永続化する state の形を変えるときは、`src/store.ts` の `persist` の `version` を上げて `migrate` を書く。
+- `src/components/ui/` は shadcn CLI の生成物なので、手で編集しない。
+  - component の追加は `pnpm dlx shadcn add <name>` で行う。
+  - 色や罫線の調整は `src/index.css` の theme token か、`src/components/` 直下の component で行う。
+
+## Deploy
+
+- Cloudflare Workers Static Assets (`wrangler.jsonc`) に、Workers Builds の Git 連携で deploy する。

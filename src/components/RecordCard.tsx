@@ -14,6 +14,7 @@ import { currencies, currencyLabelMap } from "#/domain/currency"
 import type { Currency } from "#/domain/currency"
 import { setCurrency, setIsLong, setName } from "#/domain/record"
 import type { CalculatorRecord } from "#/domain/record"
+import { cn } from "#/lib/utils"
 import { useCalculatorStore } from "#/store"
 
 type Props = {
@@ -59,8 +60,13 @@ export const RecordCard = ({ index, record }: Props): JSX.Element => {
   const orderPriceJpy = calcOrderPriceJpy(record, usdJpy)
 
   return (
-    <Card className="even:bg-accent/40">
-      <CardHeader className="flex flex-row items-center justify-between">
+    <Card
+      className={cn(
+        "shadow-lg ring-foreground/15",
+        index % 2 === 1 && "bg-record-alt",
+      )}
+    >
+      <CardHeader className="flex flex-row items-center justify-between border-b">
         <CardTitle className="flex size-7 items-center justify-center rounded-full border text-sm">
           {index + 1}
         </CardTitle>
@@ -74,7 +80,7 @@ export const RecordCard = ({ index, record }: Props): JSX.Element => {
           <Trash2 />
         </Button>
       </CardHeader>
-      <CardContent className="grid grid-cols-[minmax(0,1fr)] gap-4">
+      <CardContent className="grid grid-cols-[minmax(0,1fr)] divide-y">
         <LabeledRow label="名前">
           <TextField
             aria-label="名前"
@@ -85,17 +91,22 @@ export const RecordCard = ({ index, record }: Props): JSX.Element => {
             value={record.name}
           />
         </LabeledRow>
-        <LabeledRow label="通貨">
-          <ChoiceRadioGroup<Currency>
-            aria-label="通貨"
-            onChange={(c) => {
-              update((r) => setCurrency(r, c))
-            }}
-            options={currencyOptions}
-            value={record.currency}
-          />
+        <LabeledRow
+          className="max-sm:grid-cols-1"
+          label="発注"
+          labelExtra={
+            <ChoiceRadioGroup<Currency>
+              aria-label="通貨"
+              onChange={(c) => {
+                update((r) => setCurrency(r, c))
+              }}
+              options={currencyOptions}
+              value={record.currency}
+            />
+          }
+        >
+          <OrdersTable record={record} />
         </LabeledRow>
-        <OrdersTable record={record} />
         <LabeledRow label="売買">
           <ChoiceRadioGroup
             aria-label="売買"
@@ -112,7 +123,9 @@ export const RecordCard = ({ index, record }: Props): JSX.Element => {
         <LabeledRow label="レバレッジ">
           <OutputCell value={calcLeverage(orderPriceJpy, accountBalanceJpy)} />
         </LabeledRow>
-        <ComparePricesTable record={record} />
+        <LabeledRow className="max-sm:grid-cols-1" label="価格比較">
+          <ComparePricesTable record={record} />
+        </LabeledRow>
       </CardContent>
     </Card>
   )

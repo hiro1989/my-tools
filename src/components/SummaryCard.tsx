@@ -17,8 +17,8 @@ export const SummaryCard = (): JSX.Element => {
   const summary = calcSummary(records, accountBalanceJpy, usdJpy)
 
   return (
-    <Card>
-      <CardContent className="grid grid-cols-[minmax(0,1fr)] gap-3">
+    <Card className="shadow-md ring-foreground/15">
+      <CardContent className="grid grid-cols-[minmax(0,1fr)] divide-y">
         <LabeledRow label="証拠金残高 (JPY)">
           <NumberField
             aria-label="証拠金残高 (JPY)"
