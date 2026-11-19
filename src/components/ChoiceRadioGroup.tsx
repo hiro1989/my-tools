@@ -27,7 +27,7 @@ export const ChoiceRadioGroup = <T extends string>({
   return (
     <RadioGroup
       aria-label={ariaLabel}
-      className="flex gap-4"
+      className="flex flex-wrap gap-x-3 gap-y-1"
       onValueChange={(v) => {
         const selected = options.find((o) => o.value === v)
         if (selected) {
