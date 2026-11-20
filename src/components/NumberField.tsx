@@ -2,7 +2,14 @@ import { useState } from "react"
 import type { JSX } from "react"
 
 import { Input } from "#/components/ui/input"
-import { calc10PerStep, formatForInput, parseNumber } from "#/lib/number"
+import {
+  calc10PerStep,
+  countBeforeCaret,
+  formatDraft,
+  formatForInput,
+  locateCaret,
+  parseNumber,
+} from "#/lib/number"
 
 type Props = {
   readonly allowNegative?: boolean
@@ -14,7 +21,7 @@ type Props = {
 
 /**
  * 入力中は内部 state のみ更新し、blur か Enter で確定する数値入力
- * - 非編集時は桁区切りで表示する
+ * - 編集中も含めて常に桁区切りで表示する
  * - ↑↓キーで、値の桁数に応じた幅で増減する
  */
 export const NumberField = ({
@@ -39,7 +46,9 @@ export const NumberField = ({
 
   const step = (direction: 1 | -1): void => {
     const current = parseNumber(draft ?? String(value)) ?? 0
-    setDraft(String(clamp(current + calc10PerStep(current) * direction)))
+    setDraft(
+      formatForInput(clamp(current + calc10PerStep(current) * direction)),
+    )
   }
 
   return (
@@ -49,10 +58,20 @@ export const NumberField = ({
       inputMode="decimal"
       onBlur={commit}
       onChange={(e) => {
-        setDraft(e.target.value)
+        // 桁区切りを付け直した値と caret 位置を DOM に先に反映し、再描画で caret が末尾へ飛ばないようにする
+        const { target } = e
+        const input = target.value
+        const next = formatDraft(input)
+        const caret = locateCaret(
+          next,
+          countBeforeCaret(input, target.selectionStart ?? input.length),
+        )
+        target.value = next
+        target.setSelectionRange(caret, caret)
+        setDraft(next)
       }}
       onFocus={(e) => {
-        setDraft(String(value))
+        setDraft(formatForInput(value))
         e.target.select()
       }}
       onKeyDown={(e) => {
