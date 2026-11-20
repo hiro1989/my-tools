@@ -87,7 +87,7 @@ export const ComparePricesTable = ({ record }: Props): JSX.Element => {
                     <NumberField
                       aria-label={`価格比較 ${index + 1} の対象単価`}
                       className="w-36"
-                      onCommit={(v) => {
+                      onChange={(v) => {
                         update((r) => updateComparePrice(r, p.id, v))
                       }}
                       value={p.price}

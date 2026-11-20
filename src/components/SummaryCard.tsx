@@ -23,7 +23,7 @@ export const SummaryCard = (): JSX.Element => {
           <NumberField
             aria-label="証拠金残高 (JPY)"
             className="w-full max-w-48"
-            onCommit={setAccountBalanceJpy}
+            onChange={setAccountBalanceJpy}
             value={accountBalanceJpy}
           />
         </LabeledRow>
@@ -31,7 +31,7 @@ export const SummaryCard = (): JSX.Element => {
           <NumberField
             aria-label="USD/JPY"
             className="w-full max-w-48"
-            onCommit={setUsdJpy}
+            onChange={setUsdJpy}
             value={usdJpy}
           />
         </LabeledRow>
