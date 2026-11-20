@@ -12,11 +12,16 @@ export const calc10PerStep = (value: number): number => {
 }
 
 /**
+ * 桁区切りの "," と "_"、空白を取り除く
+ */
+const stripSeparators = (v: string): string => v.replaceAll(/[,_\s]/gu, "")
+
+/**
  * 数値に変換できないものは undefined を返す
  * 桁区切りの "," と "_" は無視する
  */
 export const parseNumber = (v: string): number | undefined => {
-  const trimmed = v.replaceAll(/[,_\s]/gu, "")
+  const trimmed = stripSeparators(v)
   if (trimmed === "") {
     return undefined
   }
@@ -51,3 +56,50 @@ const inputFormatter = new Intl.NumberFormat("ja-JP", {
  */
 export const formatForInput = (value: number): string =>
   inputFormatter.format(value)
+
+/**
+ * 編集中の入力文字列の整数部に桁区切りを付け直す
+ * - 末尾の "." や小数部の末尾の 0 など、入力途中の形はそのまま残す
+ * - 数値の形でない文字列は変更しない
+ *
+ * @example
+ * formatDraft("1234567.50") // => "1,234,567.50"
+ * formatDraft("-12,34.") // => "-1,234."
+ */
+export const formatDraft = (input: string): string => {
+  const match = /^(-?)(\d*)(\.\d*)?$/u.exec(stripSeparators(input))
+  if (match === null) {
+    return input
+  }
+  const [, sign = "", integer = "", fraction = ""] = match
+  return `${sign}${integer.replaceAll(/\B(?=(?:\d{3})+$)/gu, ",")}${fraction}`
+}
+
+/**
+ * caret より前にある、桁区切りを除いた文字数を返す
+ * - 桁区切りを付け直した後に caret を同じ位置へ戻すために使う
+ */
+export const countBeforeCaret = (input: string, caret: number): number =>
+  stripSeparators(input.slice(0, caret)).length
+
+/**
+ * 桁区切りを除いて count 文字目の直後にあたる、formatted 上の caret 位置を返す
+ *
+ * @example
+ * locateCaret("1,234", 2) // => 3
+ */
+export const locateCaret = (formatted: string, count: number): number => {
+  if (count <= 0) {
+    return 0
+  }
+  let remaining = count
+  for (let index = 0; index < formatted.length; index += 1) {
+    if (stripSeparators(formatted.charAt(index)) !== "") {
+      remaining -= 1
+      if (remaining === 0) {
+        return index + 1
+      }
+    }
+  }
+  return formatted.length
+}
