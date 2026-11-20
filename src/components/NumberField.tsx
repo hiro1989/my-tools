@@ -15,20 +15,22 @@ type Props = {
   readonly allowNegative?: boolean
   readonly "aria-label": string
   readonly className?: string
-  readonly onCommit: (value: number) => void
+  readonly onChange: (value: number) => void
   readonly value: number
 }
 
 /**
- * 入力中は内部 state のみ更新し、blur か Enter で確定する数値入力
+ * 入力のたびに値を onChange へ渡す数値入力
+ * - 編集中は入力途中の文字列 ("1." など) を保ち、blur か Enter で value の表示に戻す
  * - 編集中も含めて常に桁区切りで表示する
+ * - 数値として読めない入力は 0 として扱う
  * - ↑↓キーで、値の桁数に応じた幅で増減する
  */
 export const NumberField = ({
   allowNegative = false,
   "aria-label": ariaLabel,
   className,
-  onCommit,
+  onChange,
   value,
 }: Props): JSX.Element => {
   // undefined = 非編集中。外部の value をそのまま表示する
@@ -36,17 +38,14 @@ export const NumberField = ({
 
   const clamp = (v: number): number => (allowNegative ? v : Math.max(0, v))
 
-  const commit = (): void => {
-    if (draft === undefined) {
-      return
-    }
-    onCommit(clamp(parseNumber(draft) ?? 0))
-    setDraft(undefined)
+  const applyDraft = (next: string): void => {
+    setDraft(next)
+    onChange(clamp(parseNumber(next) ?? 0))
   }
 
   const step = (direction: 1 | -1): void => {
     const current = parseNumber(draft ?? String(value)) ?? 0
-    setDraft(
+    applyDraft(
       formatForInput(clamp(current + calc10PerStep(current) * direction)),
     )
   }
@@ -56,7 +55,9 @@ export const NumberField = ({
       aria-label={ariaLabel}
       className={className}
       inputMode="decimal"
-      onBlur={commit}
+      onBlur={() => {
+        setDraft(undefined)
+      }}
       onChange={(e) => {
         // 桁区切りを付け直した値と caret 位置を DOM に先に反映し、再描画で caret が末尾へ飛ばないようにする
         const { target } = e
@@ -68,7 +69,7 @@ export const NumberField = ({
         )
         target.value = next
         target.setSelectionRange(caret, caret)
-        setDraft(next)
+        applyDraft(next)
       }}
       onFocus={(e) => {
         setDraft(formatForInput(value))
@@ -87,7 +88,7 @@ export const NumberField = ({
             break
           }
           case "Enter": {
-            commit()
+            setDraft(undefined)
             break
           }
           default: {

@@ -94,7 +94,7 @@ export const OrdersTable = ({ record }: Props): JSX.Element => {
                 <NumberField
                   aria-label={`発注 ${index + 1} の対象単価`}
                   className="w-36"
-                  onCommit={(v) => {
+                  onChange={(v) => {
                     update((r) => updateOrder(r, o.id, { targetUnitPrice: v }))
                   }}
                   value={o.targetUnitPrice}
@@ -104,7 +104,7 @@ export const OrdersTable = ({ record }: Props): JSX.Element => {
                 <NumberField
                   aria-label={`発注 ${index + 1} の発注数`}
                   className="w-28"
-                  onCommit={(v) => {
+                  onChange={(v) => {
                     update((r) => updateOrder(r, o.id, { orderQuantity: v }))
                   }}
                   value={o.orderQuantity}
